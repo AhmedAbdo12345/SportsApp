@@ -14,7 +14,7 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     @IBOutlet weak var favTable: UITableView!
     
     var myContext : NSManagedObjectContext!
-    var favTeams : [TeamsModel] = []
+    var favTeams : [TeamModelCoreData] = []
     var myCoreDate: MyCoreData!
     
     
@@ -27,15 +27,30 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "favCell", for: indexPath)as! FavTableViewCell
+        
         if favTeams[indexPath.row].team_logo != nil {
-            let url = URL(string: favTeams[indexPath.row].team_logo)
-            cell.favTeamImage.kf.setImage(with: url)
+          /*  let url = URL(string: favTeams[indexPath.row].team_logo)
+            cell.favTeamImage.kf.setImage(with: url)*/
+            
+            let imageString = favTeams[indexPath.row].team_logo
+            cell.favTeamImage.image = UIImage(data: imageString!)
+            
         }
+        
+        
+        
         cell.favTeamNameLabel.text = favTeams[indexPath.row].team_name
         return cell
     }
     
     override func viewWillAppear(_ animated: Bool) {
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        myContext = appDelegate.persistentContainer.viewContext
+        
+         myCoreDate = MyCoreData(context: myContext)
+        favTeams = myCoreDate.fechCoreData()
+        
         favTable.reloadData()
 
     }
@@ -43,12 +58,7 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        
-        let appDelegate = UIApplication.shared.delegate as! AppDelegate
-        myContext = appDelegate.persistentContainer.viewContext
-        
-         myCoreDate = MyCoreData(context: myContext)
-        favTeams = myCoreDate.fechCoreData()
+    
         
         favTable.reloadData()
         

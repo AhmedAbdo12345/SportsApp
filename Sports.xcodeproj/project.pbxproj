@@ -26,6 +26,16 @@
 		E2779E662A07A09600368C04 /* TestLiveScoreNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E652A07A09600368C04 /* TestLiveScoreNetwork.swift */; };
 		E2779E682A07A0AF00368C04 /* TestTeamsNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E672A07A0AF00368C04 /* TestTeamsNetwork.swift */; };
 		E2779E6A2A07A0CE00368C04 /* TestLeaguesNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E692A07A0CE00368C04 /* TestLeaguesNetwork.swift */; };
+		E2779E6C2A07C0DF00368C04 /* MockLeaguesNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E6B2A07C0DF00368C04 /* MockLeaguesNetwork.swift */; };
+		E2779E6E2A07C10500368C04 /* MockTeamsNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E6D2A07C10500368C04 /* MockTeamsNetwork.swift */; };
+		E2779E702A07C12100368C04 /* MockLiveScoreNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E6F2A07C12100368C04 /* MockLiveScoreNetwork.swift */; };
+		E2779E722A07C13E00368C04 /* MockFixturesNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E712A07C13E00368C04 /* MockFixturesNetwork.swift */; };
+		E2779E742A07C2EA00368C04 /* ConstantJsonString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E732A07C2EA00368C04 /* ConstantJsonString.swift */; };
+		E2779E772A07C8AF00368C04 /* TestMockLeaguesNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E762A07C8AF00368C04 /* TestMockLeaguesNetwork.swift */; };
+		E2779E7B2A07CCDA00368C04 /* TestMockFixturesNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E7A2A07CCDA00368C04 /* TestMockFixturesNetwork.swift */; };
+		E2779E7D2A07D18A00368C04 /* TestMockLiveScoreNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E7C2A07D18A00368C04 /* TestMockLiveScoreNetwork.swift */; };
+		E2779E7F2A07D4C200368C04 /* TestMockTeamsNetwork.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E7E2A07D4C200368C04 /* TestMockTeamsNetwork.swift */; };
+		E2779E822A07F28400368C04 /* TeamModelCoreData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2779E812A07F28400368C04 /* TeamModelCoreData.swift */; };
 		E27D9B2F2A04B6C5002A2883 /* LiveScoreResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27D9B2E2A04B6C5002A2883 /* LiveScoreResponse.swift */; };
 		E27D9B352A04BC41002A2883 /* FixturesNetworkServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E27D9B342A04BC41002A2883 /* FixturesNetworkServices.swift */; };
 		E29C1D162A06CBA900E4A80C /* FavTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E29C1D152A06CBA900E4A80C /* FavTableViewCell.swift */; };
@@ -78,6 +88,16 @@
 		E2779E652A07A09600368C04 /* TestLiveScoreNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLiveScoreNetwork.swift; sourceTree = "<group>"; };
 		E2779E672A07A0AF00368C04 /* TestTeamsNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestTeamsNetwork.swift; sourceTree = "<group>"; };
 		E2779E692A07A0CE00368C04 /* TestLeaguesNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestLeaguesNetwork.swift; sourceTree = "<group>"; };
+		E2779E6B2A07C0DF00368C04 /* MockLeaguesNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLeaguesNetwork.swift; sourceTree = "<group>"; };
+		E2779E6D2A07C10500368C04 /* MockTeamsNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTeamsNetwork.swift; sourceTree = "<group>"; };
+		E2779E6F2A07C12100368C04 /* MockLiveScoreNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockLiveScoreNetwork.swift; sourceTree = "<group>"; };
+		E2779E712A07C13E00368C04 /* MockFixturesNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFixturesNetwork.swift; sourceTree = "<group>"; };
+		E2779E732A07C2EA00368C04 /* ConstantJsonString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConstantJsonString.swift; sourceTree = "<group>"; };
+		E2779E762A07C8AF00368C04 /* TestMockLeaguesNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMockLeaguesNetwork.swift; sourceTree = "<group>"; };
+		E2779E7A2A07CCDA00368C04 /* TestMockFixturesNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMockFixturesNetwork.swift; sourceTree = "<group>"; };
+		E2779E7C2A07D18A00368C04 /* TestMockLiveScoreNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMockLiveScoreNetwork.swift; sourceTree = "<group>"; };
+		E2779E7E2A07D4C200368C04 /* TestMockTeamsNetwork.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestMockTeamsNetwork.swift; sourceTree = "<group>"; };
+		E2779E812A07F28400368C04 /* TeamModelCoreData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamModelCoreData.swift; sourceTree = "<group>"; };
 		E27D9B2E2A04B6C5002A2883 /* LiveScoreResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveScoreResponse.swift; sourceTree = "<group>"; };
 		E27D9B342A04BC41002A2883 /* FixturesNetworkServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixturesNetworkServices.swift; sourceTree = "<group>"; };
 		E29C1D152A06CBA900E4A80C /* FavTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavTableViewCell.swift; sourceTree = "<group>"; };
@@ -138,6 +158,7 @@
 				E2B43AB62A0433080028E0E5 /* FixturesResponse.swift */,
 				E2B43AAC2A03FC5F0028E0E5 /* LeaguesResponse.swift */,
 				E23D21882A057406000B8E57 /* TeamsResponse.swift */,
+				E2779E812A07F28400368C04 /* TeamModelCoreData.swift */,
 			);
 			path = Pojo;
 			sourceTree = "<group>";
@@ -202,13 +223,46 @@
 		E2779E5B2A079F7600368C04 /* SportsTests */ = {
 			isa = PBXGroup;
 			children = (
-				E2779E692A07A0CE00368C04 /* TestLeaguesNetwork.swift */,
-				E2779E672A07A0AF00368C04 /* TestTeamsNetwork.swift */,
-				E2779E652A07A09600368C04 /* TestLiveScoreNetwork.swift */,
-				E2779E632A07A02600368C04 /* TestFixturesNetwork.swift */,
+				E2779E802A07D53300368C04 /* TestNetworkServices */,
+				E2779E792A07CCA200368C04 /* TestMockNetwork */,
+				E2779E782A07CC6300368C04 /* MockNetwork */,
 				E2779E5C2A079F7600368C04 /* SportsTests.swift */,
+				E2779E732A07C2EA00368C04 /* ConstantJsonString.swift */,
 			);
 			path = SportsTests;
+			sourceTree = "<group>";
+		};
+		E2779E782A07CC6300368C04 /* MockNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				E2779E712A07C13E00368C04 /* MockFixturesNetwork.swift */,
+				E2779E6F2A07C12100368C04 /* MockLiveScoreNetwork.swift */,
+				E2779E6D2A07C10500368C04 /* MockTeamsNetwork.swift */,
+				E2779E6B2A07C0DF00368C04 /* MockLeaguesNetwork.swift */,
+			);
+			path = MockNetwork;
+			sourceTree = "<group>";
+		};
+		E2779E792A07CCA200368C04 /* TestMockNetwork */ = {
+			isa = PBXGroup;
+			children = (
+				E2779E762A07C8AF00368C04 /* TestMockLeaguesNetwork.swift */,
+				E2779E7A2A07CCDA00368C04 /* TestMockFixturesNetwork.swift */,
+				E2779E7C2A07D18A00368C04 /* TestMockLiveScoreNetwork.swift */,
+				E2779E7E2A07D4C200368C04 /* TestMockTeamsNetwork.swift */,
+			);
+			path = TestMockNetwork;
+			sourceTree = "<group>";
+		};
+		E2779E802A07D53300368C04 /* TestNetworkServices */ = {
+			isa = PBXGroup;
+			children = (
+				E2779E632A07A02600368C04 /* TestFixturesNetwork.swift */,
+				E2779E672A07A0AF00368C04 /* TestTeamsNetwork.swift */,
+				E2779E652A07A09600368C04 /* TestLiveScoreNetwork.swift */,
+				E2779E692A07A0CE00368C04 /* TestLeaguesNetwork.swift */,
+			);
+			path = TestNetworkServices;
 			sourceTree = "<group>";
 		};
 		E27D9B332A04BC0E002A2883 /* Api */ = {
@@ -425,6 +479,7 @@
 				E2EDE99F2A067410000F8407 /* TeamsDetailsViewController.swift in Sources */,
 				E24BF13D2A005E3200F3D091 /* HomeCollectionViewController.swift in Sources */,
 				E23D21862A05544A000B8E57 /* LiveScoreNetworkServices.swift in Sources */,
+				E2779E822A07F28400368C04 /* TeamModelCoreData.swift in Sources */,
 				E24BF1392A00542600F3D091 /* FavouriteViewController.swift in Sources */,
 				E29C1D162A06CBA900E4A80C /* FavTableViewCell.swift in Sources */,
 				E2EDE9A12A069B98000F8407 /* PlayersTableViewCell.swift in Sources */,
@@ -442,9 +497,18 @@
 			files = (
 				E2779E6A2A07A0CE00368C04 /* TestLeaguesNetwork.swift in Sources */,
 				E2779E642A07A02600368C04 /* TestFixturesNetwork.swift in Sources */,
+				E2779E6E2A07C10500368C04 /* MockTeamsNetwork.swift in Sources */,
 				E2779E682A07A0AF00368C04 /* TestTeamsNetwork.swift in Sources */,
+				E2779E7D2A07D18A00368C04 /* TestMockLiveScoreNetwork.swift in Sources */,
+				E2779E7F2A07D4C200368C04 /* TestMockTeamsNetwork.swift in Sources */,
 				E2779E5D2A079F7600368C04 /* SportsTests.swift in Sources */,
+				E2779E702A07C12100368C04 /* MockLiveScoreNetwork.swift in Sources */,
+				E2779E7B2A07CCDA00368C04 /* TestMockFixturesNetwork.swift in Sources */,
+				E2779E742A07C2EA00368C04 /* ConstantJsonString.swift in Sources */,
 				E2779E662A07A09600368C04 /* TestLiveScoreNetwork.swift in Sources */,
+				E2779E772A07C8AF00368C04 /* TestMockLeaguesNetwork.swift in Sources */,
+				E2779E722A07C13E00368C04 /* MockFixturesNetwork.swift in Sources */,
+				E2779E6C2A07C0DF00368C04 /* MockLeaguesNetwork.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

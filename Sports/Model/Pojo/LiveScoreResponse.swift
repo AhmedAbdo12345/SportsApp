@@ -21,7 +21,7 @@ struct LiveScoreResult : Decodable {
     let home_team_key: Int?
     let event_away_team: String?
     let away_team_key: Int?
-    let event_halftime_rusult: String?
+    let event_halftime_result: String?
     let event_final_result: String?
     let event_ft_result:String?
     let event_penalty_result: String?
@@ -44,6 +44,15 @@ struct LiveScoreResult : Decodable {
     let event_quarter: String?
     let event_home_team_logo: String?
     let event_away_team_logo: String?
+    let event_first_player: String?
+    let first_player_key: Int?
+    let event_second_player:String?
+    let second_player_key: Int?
+    let event_game_result: String?
+    let event_serve: String?
+    let event_winner: String?
+    let event_first_player_logo: String?
+    let event_second_player_logo: String?
     let event_date_start: String?
     let event_date_stop: String?
     let event_service_home: String?
@@ -56,19 +65,6 @@ struct LiveScoreResult : Decodable {
     let event_type: String?
     let event_toss: String?
     let event_man_of_match:String?
-    let event_first_player: String?
-    let first_player_key: String?
-    let event_second_player:String?
-    let second_player_key: Int?
-
-    let event_game_result: String?
-    let event_serve: String?
-    let event_winner: String?
-    
-    let event_first_player_logo: String?
-    let event_second_player_logo: String?
-    
-    
     let home_team_logo: String?
     let away_team_logo: String?
     

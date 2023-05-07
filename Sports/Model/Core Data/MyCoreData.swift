@@ -11,7 +11,6 @@ import UIKit
 
 class MyCoreData{
     
-    // obj ------contect---------Core Data
     var context : NSManagedObjectContext!
  
     
@@ -19,14 +18,17 @@ class MyCoreData{
         self.context = context
     }
    
-    func saveCoreData(id: Int,teamName:String,image:String){
+    func saveCoreData(id: Int,teamName:String,image: Data){
 
         let entity = NSEntityDescription.entity(forEntityName: "Team", in: context)
         
         let team = NSManagedObject(entity: entity!, insertInto: context)
         team.setValue(id, forKey: "id")
         team.setValue(teamName, forKey: "name")
-        team.setValue(image, forKey: "image")
+ 
+        if image != nil{
+            team.setValue(image, forKey: "image")
+        }
         
         do{
             try context?.save()
@@ -38,17 +40,19 @@ class MyCoreData{
 
     }
     
-    func fechCoreData() -> [TeamsModel] {
-        var arrTeam : [TeamsModel] = []
-        var team : TeamsModel!
+    func fechCoreData() -> [TeamModelCoreData] {
+        var arrTeam : [TeamModelCoreData] = []
+        var team : TeamModelCoreData!
 
 
         
         let fetchReq = NSFetchRequest<NSManagedObject>(entityName: "Team")
         do{
             var  arrTeams = try context.fetch(fetchReq)
+            var imageString = ""
             for model in arrTeams{
-                team = TeamsModel(team_key: model.value(forKey: "id")! as! Int ,team_name: model.value(forKey: "name")! as! String,team_logo: model.value(forKey: "image")! as! String )
+    
+                team = TeamModelCoreData(team_key: model.value(forKey: "id")! as! Int ,team_name: model.value(forKey: "name")! as! String,team_logo: model.value(forKey: "image")! as? Data)
                 
                 
                 arrTeam.append(team)

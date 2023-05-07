@@ -9,22 +9,20 @@ import XCTest
 @testable import Sports
 final class TestLeaguesNetwork: XCTestCase {
 
-
-
-    func testFetchDataFromAPI()  {
-   /*      let expectaion = expectation(description: "waiting for the API")
-        NetworkService.fetchResult{
+    func testFetchFootballLeaguesFromAPI()  {
+        let expectaion = expectation(description: "waiting for the API")
+        NetworkService.fetchResult(sportName: "football"){
             res  in
-            guard let movieList = res else{
+            guard let leaguesList = res else{
                 XCTFail()
                 expectaion.fulfill()
                 return
             }
-            XCTAssertNotEqual(movieList.re.count, 0,"API Failed")
+            XCTAssertNotEqual(leaguesList.result?.count, 0,"API Failed")
             expectaion.fulfill()
         }
         waitForExpectations(timeout: 5)
-        */
+        
     }
 
 }

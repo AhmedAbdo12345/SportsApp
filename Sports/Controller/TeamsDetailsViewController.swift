@@ -31,10 +31,13 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
  
     @IBAction func favButton(_ sender: UIButton) {
         if teamsResponse != nil {
-            
+            var image : Data!
             var myCoreDate = MyCoreData(context: myContext)
-               myCoreDate.saveCoreData(id: teamId, teamName: teamsResponse.result![0].team_name, image: teamsResponse.result![0].team_logo)
-            
+            if teamImage.image != nil {
+             image = teamImage.image?.pngData()
+            }
+            myCoreDate.saveCoreData(id: teamId, teamName: teamsResponse.result![0].team_name, image: image)
+       
             
         let  alert = UIAlertController(title: "Saved", message: "Team Add SuccessFully in Favourite", preferredStyle: .alert)
              alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in
@@ -66,9 +69,10 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
                     self.teamsResponse = res
                     self.teamNameLabel.text = res?.result![0].team_name
                     
-                    if let url = res?.result![0].team_logo ,let url = URL(string: url){
+                   if let url = res?.result![0].team_logo ,let url = URL(string: url){
                         self.teamImage.kf.setImage(with: url)
                     }
+                   
                     
                     self.playersTable.reloadData()
                     

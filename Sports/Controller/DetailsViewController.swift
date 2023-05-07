@@ -37,7 +37,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             var teamDetailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController
             
             teamDetailsVC.sportName = sportName
-            teamDetailsVC.teamId = teamModel[indexPath.row].team_key
+            teamDetailsVC.teamId = teamModel[indexPath.row].team_key!
             
             self.navigationController?.pushViewController(teamDetailsVC, animated: true)
         }
@@ -68,7 +68,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             }
         }
         
-        LiveScoreNetworkServices.fetchResult(sportsName:sportName.lowercased(),leagueID:leagueID!){
+        LiveScoreNetworkServices.fetchResult(sportsName:sportName.lowercased()){
             (res) in DispatchQueue.main.async {
                 
                 self.liveScoreResponse = res
@@ -110,9 +110,14 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
         } else if collectionView == liveScoreCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "secondCell", for: indexPath)
             as! LivescoreCollectionViewCell
-            
-            cell.dateLabel.text = liveScoreResponse?.result![indexPath.row].event_date
             cell.timeLabel.text = liveScoreResponse?.result![indexPath.row].event_time
+
+            if sportName !=  "Cricket" {
+                cell.dateLabel.text = liveScoreResponse?.result![indexPath.row].event_date
+            }else{
+                cell.dateLabel.text = liveScoreResponse?.result![indexPath.row].event_date_start
+            }
+        
             
             displayLiveScoreDataUI(sportsName: sportName, liveScore: (liveScoreResponse?.result![indexPath.row])!, cell: cell, teamType: "home")
             displayLiveScoreDataUI(sportsName: sportName, liveScore: (liveScoreResponse?.result![indexPath.row])!, cell: cell, teamType: "away")
@@ -155,13 +160,15 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
         
         switch sportsName{
             
-        case "Football":  if teamType == "home" {
-            url = fixtureModel.home_team_logo
+        case "Football":
+            let urlHome = URL(string: fixtureModel.home_team_logo!)
+            let urlAway = URL(string: fixtureModel.away_team_logo!)
+
+            cell.teamOneImage.kf.setImage(with: urlHome)
+            cell.teamTwoImage.kf.setImage(with: urlAway)
             cell.teamOneNameLabel.text = fixtureModel.event_home_team
-        }
-            else {url = fixtureModel.away_team_logo
-                cell.teamTwoNameLabel.text = fixtureModel.event_away_team
-            }
+            cell.teamTwoNameLabel.text = fixtureModel.event_away_team
+
             
         case "Basketball":  if teamType == "home" {url = fixtureModel.event_home_team_logo
             cell.teamOneNameLabel.text = fixtureModel.event_home_team
@@ -248,23 +255,45 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             switch sportsName{
                 
             case "Football":  if teamType == "home" {
-                team = TeamsModel(team_key: fixture.home_team_key!,team_name: fixture.event_home_team!,team_logo:fixture.home_team_logo!)
-                
-            }else {    team = TeamsModel(team_key: fixture.away_team_key!,team_name: fixture.event_away_team!,team_logo:fixture.away_team_logo!)}
+                if let key = fixture.home_team_key , let logo = fixture.home_team_logo{
+                    team = TeamsModel(team_key: key,team_name: fixture.event_home_team!,team_logo:logo)
+                    
+                }
+            
+            }else {
+                if let key = fixture.away_team_key , let logo = fixture.away_team_logo{
+                    team = TeamsModel(team_key: key,team_name: fixture.event_away_team!,team_logo:logo)}
+                }
+              
                 
             case "Basketball" ,"Cricket":  if teamType == "home" {
-                team = TeamsModel(team_key: fixture.home_team_key!,team_name: fixture.event_home_team!,team_logo:fixture.event_home_team_logo!)
-                
-            }else {    team = TeamsModel(team_key: fixture.away_team_key!,team_name: fixture.event_away_team!,team_logo:fixture.event_away_team_logo!)}
+                if let key = fixture.home_team_key , let logo = fixture.event_home_team_logo{
+                    team = TeamsModel(team_key: key,team_name: fixture.event_home_team!,team_logo:logo)                }
+              
+            }else {
+                if let key = fixture.away_team_key , let logo = fixture.event_away_team_logo{
+                    team = TeamsModel(team_key: key,team_name: fixture.event_away_team!,team_logo:logo)
+                }
+            }
                 
             default: if teamType == "home" {
-                team = TeamsModel(team_key: fixture.home_team_key!,team_name: fixture.event_first_player!,team_logo:fixture.event_first_player_logo!)
+                if let key = fixture.first_player_key , let logo = fixture.event_first_player_logo{
+                    team = TeamsModel(team_key:key,team_name: fixture.event_first_player!,team_logo:logo)
+                }
+          
+            }else {
+                if let key = fixture.second_player_key , let logo = fixture.event_second_player_logo{
+                    team = TeamsModel(team_key: key,team_name: fixture.event_second_player!,team_logo:logo)
+                }
+       
                 
-            }else {    team = TeamsModel(team_key: fixture.away_team_key!,team_name: fixture.event_second_player!,team_logo:fixture.event_second_player_logo!)}
+            }
             }
             
             if !self.teamModel.contains(where: { $0.team_key == team.team_key }) {
-                self.teamModel.append(team)
+                if  team != nil {
+                    self.teamModel.append(team)
+                }
             }
         }
         
