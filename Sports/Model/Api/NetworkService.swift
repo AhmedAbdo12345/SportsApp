@@ -13,6 +13,7 @@ protocol NetworkProtocol{
 class NetworkService : NetworkProtocol{
     
     static func fetchResult( sportName:String ,comlitionHandler: @escaping (LeaguesResponse?)-> Void) {
+        
         var url = "https://apiv2.allsportsapi.com/\(sportName)/?met=Leagues&APIkey=243e9ed7ab60d0f2b0c1cbf0cf44824fce00282296cf3dfae234a42e399f03ba"
       
         guard let newUrl = URL(string: url) else{

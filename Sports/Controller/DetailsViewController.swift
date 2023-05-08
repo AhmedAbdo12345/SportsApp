@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Reachability
 class DetailsViewController: UIViewController ,UICollectionViewDataSource,UICollectionViewDelegate{
     
     var fixturesResponse: FixturesResponse?
@@ -35,33 +35,25 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
         self.liveScoreCollectionView.reloadData()
         self.teamsCollectionView.reloadData()
         
-       
+        
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        
         if collectionView == teamsCollectionView{
-            if sportName == "Football"{
-                var teamDetailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController
-                
-                teamDetailsVC.sportName = sportName
-                teamDetailsVC.teamId = teamModel[indexPath.row].team_key!
-                self.navigationController?.pushViewController(teamDetailsVC, animated: true)
-            }else{
-                
-            let  alert = UIAlertController(title: "Message", message: "There is no Team Details for \(sportName)", preferredStyle: .alert)
-                 alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in
-                }))
-             
-            self.present(alert, animated: true)
-               
-            }
+            navigateToTeamDetailsScreen(teamKey: teamModel[indexPath.row].team_key!)
         }
     }
     override func viewWillAppear(_ animated: Bool) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
         let currentDate = Date()
-        let nextDate = Calendar.current.date(byAdding: .day, value: 7, to: currentDate)!
-        
+        let nextDate = Calendar.current.date(byAdding: .day, value: 15, to: currentDate)!
+        var  reachability = try! Reachability()
+           var myNetworkConnection = MyNetworConnection(reachability: reachability)
+             
+             if myNetworkConnection.isReachableViaWiFi() {
+                 
         DetailsNetworkService.fetchResultFixtures(sportsName:sportName.lowercased(),leagueID:leagueID!, dateFrom: currentDate, dateTo:nextDate){
             (res) in DispatchQueue.main.async { [self] in
                 
@@ -87,6 +79,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
                 self.liveScoreCollectionView.reloadData()
             }
         }
+    }
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -123,8 +116,8 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
         if collectionView == fixturesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "firstCell", for: indexPath) as! FixturesCollectionViewCell
             
-        
-      
+            
+            
             cell.dateLabel.text = fixturesResponse?.result![indexPath.row].event_date
             cell.timeLabel.text = fixturesResponse?.result![indexPath.row].event_time
             
@@ -137,7 +130,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             
             cell.timeLabel.text = liveScoreResponse?.result![indexPath.row].event_time
             displayLiveScoreDataUI(liveScore: (liveScoreResponse?.result![indexPath.row])!, cell: cell)
- 
+            
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thirdCell", for: indexPath) as! TeamsCollectionViewCell
@@ -162,9 +155,9 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             return CGSize(width: width, height: height)
         }
     }
-
+    
     func displayFixtureDataUI(fixtureModel : FixturesModel, cell: FixturesCollectionViewCell){
-
+        
         switch sportName{
             
         case "Football":
@@ -174,10 +167,10 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             if let urlAway = URL(string: fixtureModel.away_team_logo ?? ""){
                 cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named: "placeholder_Football"))
             }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Football")}
-
+            
             cell.teamOneNameLabel.text = fixtureModel.event_home_team
             cell.teamTwoNameLabel.text = fixtureModel.event_away_team
-
+            
             
         case "Basketball":
             if let urlHome = URL(string:  fixtureModel.event_home_team_logo ?? ""){
@@ -188,7 +181,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Basketball")}
             cell.teamOneNameLabel.text = fixtureModel.event_home_team
             cell.teamTwoNameLabel.text = fixtureModel.event_away_team
-        
+            
         case "Tennis":
             if let urlHome = URL(string:fixtureModel.event_first_player_logo ?? ""){
                 cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Tennis"))
@@ -198,7 +191,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Tennis")}
             cell.teamOneNameLabel.text = fixtureModel.event_first_player
             cell.teamTwoNameLabel.text = fixtureModel.event_second_player
-        
+            
             
         default:
             if let urlHome = URL(string: fixtureModel.home_team_logo ?? ""){
@@ -209,11 +202,11 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Cricket")}
             cell.teamOneNameLabel.text = fixtureModel.event_home_team
             cell.teamTwoNameLabel.text = fixtureModel.event_away_team
-        
+            
         }
     }
     
-
+    
     func displayLiveScoreDataUI(liveScore : LiveScoreResult, cell: LivescoreCollectionViewCell){
         
         
@@ -245,7 +238,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             cell.teamTwoNameLabel.text = liveScore.event_away_team
             cell.dateLabel.text = liveScore.event_date
             cell.resultLabel.text = liveScore.event_final_result
-
+            
             
             
         case "Tennis" :
@@ -258,7 +251,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             cell.teamTwoNameLabel.text = liveScore.event_second_player
             cell.dateLabel.text = liveScore.event_date
             cell.resultLabel.text = liveScore.event_final_result
-
+            
             
             
         default:
@@ -272,14 +265,14 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             cell.teamTwoNameLabel.text = liveScore.event_away_team
             cell.dateLabel.text = liveScore.event_date_start
             cell.resultLabel.text = liveScore.event_home_final_result?.appending(" - ").appending((liveScore.event_away_final_result!))
-
+            
         }
     }
     
     func fillTeamFromFixtures(fixture:FixturesModel ){
         var teamHome : TeamsModel!
         var teamAway : TeamsModel!
-
+        
         if fixture != nil{
             switch sportName{
                 
@@ -305,16 +298,43 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             
             addTeamObject(team: teamHome)
             addTeamObject(team: teamAway)
-
+            
         }
         
     }
- 
+    
     func addTeamObject(team : TeamsModel?){
         if !self.teamModel.contains(where: { $0.team_key == team?.team_key}){
             if  let team1 = team {
                 self.teamModel.append(team1)
             }
+        }
+    }
+    
+    func navigateToTeamDetailsScreen(teamKey: Int){
+        var  reachability = try! Reachability()
+        var myNetworkConnection = MyNetworConnection(reachability: reachability)
+        
+        if myNetworkConnection.isReachableViaWiFi() {
+            if sportName == "Football"{
+                var teamDetailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController
+                
+                teamDetailsVC.sportName = sportName
+                teamDetailsVC.teamId = teamKey
+                self.navigationController?.pushViewController(teamDetailsVC, animated: true)
+            }else{
+                
+                let  alert = UIAlertController(title: "Message", message: "There is no Team Details for \(sportName)", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in
+                }))
+                
+                self.present(alert, animated: true)
+                
+            }
+        }else{
+            let alert = UIAlertController(title: "Connection", message: "no found Internet Connection", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in  }))
+            self.present(alert, animated: true)
         }
     }
 }

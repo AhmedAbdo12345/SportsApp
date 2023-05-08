@@ -7,7 +7,7 @@
 
 import UIKit
 import Kingfisher
-
+import Reachability
 class SportsTableViewController: UITableViewController {
 
     var sportName = ""
@@ -21,14 +21,17 @@ class SportsTableViewController: UITableViewController {
         }
         
     override func viewWillAppear(_ animated: Bool) {
-        
-        NetworkService.fetchResult(sportName: sportName.lowercased()){
-            (res) in DispatchQueue.main.async {
-                
-                self.leaguesResponse = res
-                self.tableView.reloadData()
-
-            }
+        var  reachability = try! Reachability()
+           var myNetworkConnection = MyNetworConnection(reachability: reachability)
+             if myNetworkConnection.isReachableViaWiFi() {
+                 NetworkService.fetchResult(sportName: sportName.lowercased()){
+                     (res) in DispatchQueue.main.async {
+                         
+                         self.leaguesResponse = res
+                         self.tableView.reloadData()
+                         
+                     }
+                 }
         }
     }
 
@@ -72,10 +75,20 @@ class SportsTableViewController: UITableViewController {
    
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        var detailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "details") as! DetailsViewController
-        detailsVC.sportName = sportName
-        detailsVC.leagueID = leaguesResponse?.result![indexPath.row].league_key
-        self.navigationController?.pushViewController(detailsVC, animated: true)
-        
+        var  reachability = try! Reachability()
+           var myNetworkConnection = MyNetworConnection(reachability: reachability)
+             
+      if myNetworkConnection.isReachableViaWiFi() {
+          var detailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "details") as! DetailsViewController
+          detailsVC.sportName = sportName
+          detailsVC.leagueID = leaguesResponse?.result![indexPath.row].league_key
+          self.navigationController?.pushViewController(detailsVC, animated: true)
+          
+        }else{
+           let alert = UIAlertController(title: "Connection", message: "no found Internet Connection", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in  }))
+            
+                self.present(alert, animated: true)
+             }
     }
 }

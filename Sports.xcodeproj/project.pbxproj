@@ -46,6 +46,7 @@
 		E2B43AB12A04271D0028E0E5 /* LivescoreCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B43AB02A04271D0028E0E5 /* LivescoreCollectionViewCell.swift */; };
 		E2B43AB32A0428750028E0E5 /* TeamsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B43AB22A0428750028E0E5 /* TeamsCollectionViewCell.swift */; };
 		E2B43AB72A0433080028E0E5 /* FixturesResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B43AB62A0433080028E0E5 /* FixturesResponse.swift */; };
+		E2B6E33B2A096F3300224FBE /* MyNetworkConnection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2B6E33A2A096F3300224FBE /* MyNetworkConnection.swift */; };
 		E2DB1C8F2A010F04000B60A5 /* SportsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2DB1C8E2A010F04000B60A5 /* SportsTableViewController.swift */; };
 		E2EBDD8D2A016DDE00AE3EBC /* SportsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EBDD8C2A016DDE00AE3EBC /* SportsTableViewCell.swift */; };
 		E2EBDD912A0182E900AE3EBC /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E2EBDD902A0182E900AE3EBC /* DetailsViewController.swift */; };
@@ -109,6 +110,7 @@
 		E2B43AB02A04271D0028E0E5 /* LivescoreCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LivescoreCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2B43AB22A0428750028E0E5 /* TeamsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsCollectionViewCell.swift; sourceTree = "<group>"; };
 		E2B43AB62A0433080028E0E5 /* FixturesResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixturesResponse.swift; sourceTree = "<group>"; };
+		E2B6E33A2A096F3300224FBE /* MyNetworkConnection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyNetworkConnection.swift; sourceTree = "<group>"; };
 		E2DB1C8E2A010F04000B60A5 /* SportsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsTableViewController.swift; sourceTree = "<group>"; };
 		E2EBDD8C2A016DDE00AE3EBC /* SportsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsTableViewCell.swift; sourceTree = "<group>"; };
 		E2EBDD902A0182E900AE3EBC /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
@@ -207,6 +209,7 @@
 				E2EDE9A22A06B868000F8407 /* Core Data */,
 				E23D21872A056D49000B8E57 /* Pojo */,
 				E27D9B332A04BC0E002A2883 /* Api */,
+				E2B6E33A2A096F3300224FBE /* MyNetworkConnection.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -483,6 +486,7 @@
 				E2EDE99F2A067410000F8407 /* TeamsDetailsViewController.swift in Sources */,
 				E24BF13D2A005E3200F3D091 /* HomeCollectionViewController.swift in Sources */,
 				E23D21862A05544A000B8E57 /* LiveScoreNetworkServices.swift in Sources */,
+				E2B6E33B2A096F3300224FBE /* MyNetworkConnection.swift in Sources */,
 				E2779E822A07F28400368C04 /* TeamModelCoreData.swift in Sources */,
 				E24BF1392A00542600F3D091 /* FavouriteViewController.swift in Sources */,
 				E29C1D162A06CBA900E4A80C /* FavTableViewCell.swift in Sources */,

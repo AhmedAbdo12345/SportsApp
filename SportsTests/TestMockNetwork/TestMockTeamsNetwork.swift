@@ -12,7 +12,7 @@ final class TestMockTeamsNetwork: XCTestCase {
 
         func testFetchFootballTeamsFromAPI()  {
             let expectaion = expectation(description: "waiting for the API")
-            MockTeamsNetwork.fetchResult(sportsName: "football", teamID: 4){
+            MockTeamsNetwork.fetchResultTeams(sportsName: "football", teamID: 4){
                 res  in
                 guard let teamsList = res else{
                     XCTFail()

@@ -8,7 +8,7 @@
 import UIKit
 import Kingfisher
 import CoreData
-
+import Reachability
 class FavouriteViewController: UIViewController , UITableViewDelegate,UITableViewDataSource{
     
     @IBOutlet weak var favTable: UITableView!
@@ -16,7 +16,7 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     var myContext : NSManagedObjectContext!
     var favTeams : [TeamModelCoreData] = []
     var myCoreDate: MyCoreData!
-    
+ 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -57,13 +57,14 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     override func viewDidLoad() {
         super.viewDidLoad()
 
-    
-        
         favTable.reloadData()
         
     }
     
-
+    @objc func reachabilityChanged(_ notification:Notification){
+        let reachability = notification.object as! Reachability
+        
+    }
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         let alert = UIAlertController(title: "Delete", message: "Do you want to Delete this Item ?", preferredStyle: .alert)
@@ -81,15 +82,30 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     self.present(alert, animated: true)
 
     }
+    
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         150
     }
+    
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-         var teamDetailsVC = self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController
-                
-                teamDetailsVC.sportName = "Football"
-                teamDetailsVC.teamId = favTeams[indexPath.row].team_key
-                self.navigationController?.pushViewController(teamDetailsVC, animated: true)
+        
+   var  reachability = try! Reachability()
+      var myNetworkConnection = MyNetworConnection(reachability: reachability)
+        
+        if myNetworkConnection.isReachableViaWiFi() {
+            var teamDetailsVC = self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController
+                    
+                    teamDetailsVC.sportName = "Football"
+                    teamDetailsVC.teamId = favTeams[indexPath.row].team_key
+                    self.navigationController?.pushViewController(teamDetailsVC, animated: true)
+        }else{
+            let alert = UIAlertController(title: "Connection", message: "no found Internet Connection", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in  }))
+           self.present(alert, animated: true)
+        }
+
     }
  
     

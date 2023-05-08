@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Reachability
 
 class HomeCollectionViewController: UICollectionViewController ,
 UICollectionViewDelegateFlowLayout{
@@ -15,9 +15,6 @@ UICollectionViewDelegateFlowLayout{
         super.viewDidLoad()
 
     }
-
- 
-    
 
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         // #warning Incomplete implementation, return the number of sections
@@ -65,12 +62,22 @@ UICollectionViewDelegateFlowLayout{
    
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        var  reachability = try! Reachability()
+           var myNetworkConnection = MyNetworConnection(reachability: reachability)
+             
+      if myNetworkConnection.isReachableViaWiFi() {
         var sportsTVC =  self.storyboard?.instantiateViewController(withIdentifier: "sportsTable") as! SportsTableViewController
+                 
+            sportsTVC.sportName = sportsNames[indexPath.row]
+                 
+            self.navigationController?.pushViewController(sportsTVC, animated: true)
         
-        sportsTVC.sportName = sportsNames[indexPath.row]
-        
-        self.navigationController?.pushViewController(sportsTVC, animated: true)
-        
+        }else{
+                 let alert = UIAlertController(title: "Connection", message: "no found Internet Connection", preferredStyle: .alert)
+                 alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in  }))
+                self.present(alert, animated: true)
+             }
     }
 
 }

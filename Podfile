@@ -6,6 +6,8 @@ target 'Sports' do
 
   # Pods for Sports
   pod 'Kingfisher', '~> 7.0'
+  pod 'ReachabilitySwift'
+
 
 
 end
