@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct TeamModelCoreData{
+struct TeamModelCoreData: Hashable{
     var team_key: Int
     var team_name: String
     var team_logo: Data?

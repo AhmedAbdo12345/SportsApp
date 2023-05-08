@@ -17,6 +17,11 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
     var leagueID: Int?
     var sportName = ""
     
+    
+    @IBOutlet weak var emptyFixtureImage: UIImageView!
+    
+    @IBOutlet weak var emptyTeamsImage: UIImageView!
+    
     @IBOutlet weak var fixturesCollectionView: UICollectionView!
     
     @IBOutlet weak var liveScoreCollectionView: UICollectionView!
@@ -26,20 +31,29 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         self.fixturesCollectionView.reloadData()
         self.liveScoreCollectionView.reloadData()
         self.teamsCollectionView.reloadData()
         
+       
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if collectionView == teamsCollectionView{
-            var teamDetailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController
-            
-            teamDetailsVC.sportName = sportName
-            teamDetailsVC.teamId = teamModel[indexPath.row].team_key!
-            
-            self.navigationController?.pushViewController(teamDetailsVC, animated: true)
+            if sportName == "Football"{
+                var teamDetailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController
+                
+                teamDetailsVC.sportName = sportName
+                teamDetailsVC.teamId = teamModel[indexPath.row].team_key!
+                self.navigationController?.pushViewController(teamDetailsVC, animated: true)
+            }else{
+                
+            let  alert = UIAlertController(title: "Message", message: "There is no Team Details for \(sportName)", preferredStyle: .alert)
+                 alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in
+                }))
+             
+            self.present(alert, animated: true)
+               
+            }
         }
     }
     override func viewWillAppear(_ animated: Bool) {
@@ -48,7 +62,7 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
         let currentDate = Date()
         let nextDate = Calendar.current.date(byAdding: .day, value: 7, to: currentDate)!
         
-        FixturesNetworkServices.fetchResult(sportsName:sportName.lowercased(),leagueID:leagueID!, dateFrom: currentDate, dateTo:nextDate){
+        DetailsNetworkService.fetchResultFixtures(sportsName:sportName.lowercased(),leagueID:leagueID!, dateFrom: currentDate, dateTo:nextDate){
             (res) in DispatchQueue.main.async { [self] in
                 
                 self.fixturesResponse = res
@@ -58,22 +72,19 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
                     
                 }
                 for fixture in fixturesModel{
-                    fillTeamFromFixtures(sportsName: sportName, fixture: fixture, teamType: "home")
-                    fillTeamFromFixtures(sportsName: sportName, fixture: fixture, teamType: "away")
+                    fillTeamFromFixtures(fixture: fixture)
                 }
                 
                 self.fixturesCollectionView.reloadData()
                 self.teamsCollectionView.reloadData()
-                
             }
         }
         
-        LiveScoreNetworkServices.fetchResult(sportsName:sportName.lowercased()){
+        DetailsNetworkService.fetchResultLiveScore(sportsName:sportName.lowercased()){
             (res) in DispatchQueue.main.async {
                 
                 self.liveScoreResponse = res
                 self.liveScoreCollectionView.reloadData()
-                
             }
         }
     }
@@ -85,50 +96,57 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         if collectionView == fixturesCollectionView {
+            if fixturesResponse?.result?.count ?? 0 == 0 {
+                self.emptyFixtureImage.image = UIImage(named: "placeholder_empty")
+                self.emptyFixtureImage.isHidden = false
+                return  0
+            }else{
+                self.emptyFixtureImage.isHidden = true
+            }
             return fixturesResponse?.result?.count ?? 0
         } else if collectionView == liveScoreCollectionView {
             return liveScoreResponse?.result?.count ?? 0
         } else {
+            if fixturesResponse?.result?.count ?? 0 == 0 {
+                self.emptyTeamsImage.image = UIImage(named: "placeholder_empty")
+                self.emptyTeamsImage.isHidden = false
+                return  0
+            }else{
+                self.emptyTeamsImage.isHidden = true
+            }
             return teamModel.count ?? 0
         }
-        
         
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        //   let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "firstCell", for: indexPath)
         if collectionView == fixturesCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "firstCell", for: indexPath) as! FixturesCollectionViewCell
+            
+        
+      
             cell.dateLabel.text = fixturesResponse?.result![indexPath.row].event_date
             cell.timeLabel.text = fixturesResponse?.result![indexPath.row].event_time
             
-            displayFixtureDataUI(sportsName: sportName, fixtureModel: (fixturesResponse?.result![indexPath.row])!, cell: cell, teamType: "home")
-            displayFixtureDataUI(sportsName: sportName, fixtureModel: (fixturesResponse?.result![indexPath.row])!, cell: cell, teamType: "away")
-
+            displayFixtureDataUI( fixtureModel: (fixturesResponse?.result![indexPath.row])!, cell: cell)
             
             return cell
         } else if collectionView == liveScoreCollectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "secondCell", for: indexPath)
             as! LivescoreCollectionViewCell
-            cell.timeLabel.text = liveScoreResponse?.result![indexPath.row].event_time
-
-            if sportName !=  "Cricket" {
-                cell.dateLabel.text = liveScoreResponse?.result![indexPath.row].event_date
-            }else{
-                cell.dateLabel.text = liveScoreResponse?.result![indexPath.row].event_date_start
-            }
-        
             
-            displayLiveScoreDataUI(sportsName: sportName, liveScore: (liveScoreResponse?.result![indexPath.row])!, cell: cell, teamType: "home")
-            displayLiveScoreDataUI(sportsName: sportName, liveScore: (liveScoreResponse?.result![indexPath.row])!, cell: cell, teamType: "away")
+            cell.timeLabel.text = liveScoreResponse?.result![indexPath.row].event_time
+            displayLiveScoreDataUI(liveScore: (liveScoreResponse?.result![indexPath.row])!, cell: cell)
  
             return cell
         } else {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "thirdCell", for: indexPath) as! TeamsCollectionViewCell
             
-            let url = URL(string: teamModel[indexPath.row].team_logo!)
-            cell.teamsImage.kf.setImage(with: url)
+            if let url = URL(string: teamModel[indexPath.row].team_logo ?? "") {
+                cell.teamsImage.kf.setImage(with: url)
+            }
             return cell
+            
         }
     }
     
@@ -144,160 +162,160 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
             return CGSize(width: width, height: height)
         }
     }
-    
-    
-   /* func displayFixturesImage(urlName : String!, image: UIImageView) {
-        
-        if urlName != nil{
-            let url = URL(string: urlName)
-            image.kf.setImage(with: url)
-        }
-    }*/
-    
 
-    func displayFixtureDataUI(sportsName:String,fixtureModel : FixturesModel, cell: FixturesCollectionViewCell , teamType: String){
-        var url : String! = ""
-        
-        switch sportsName{
+    func displayFixtureDataUI(fixtureModel : FixturesModel, cell: FixturesCollectionViewCell){
+
+        switch sportName{
             
         case "Football":
-            let urlHome = URL(string: fixtureModel.home_team_logo!)
-            let urlAway = URL(string: fixtureModel.away_team_logo!)
+            if let urlHome = URL(string: fixtureModel.home_team_logo ?? ""){
+                cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Football"))
+            }else{cell.teamOneImage.image = UIImage(named: "placeholder_Football")}
+            if let urlAway = URL(string: fixtureModel.away_team_logo ?? ""){
+                cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named: "placeholder_Football"))
+            }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Football")}
 
-            cell.teamOneImage.kf.setImage(with: urlHome)
-            cell.teamTwoImage.kf.setImage(with: urlAway)
             cell.teamOneNameLabel.text = fixtureModel.event_home_team
             cell.teamTwoNameLabel.text = fixtureModel.event_away_team
 
             
-        case "Basketball":  if teamType == "home" {url = fixtureModel.event_home_team_logo
+        case "Basketball":
+            if let urlHome = URL(string:  fixtureModel.event_home_team_logo ?? ""){
+                cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Basketball"))
+            }else{cell.teamOneImage.image = UIImage(named: "placeholder_Basketball")}
+            if let urlAway = URL(string:  fixtureModel.event_away_team_logo ?? ""){
+                cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named:"placeholder_Basketball"))
+            }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Basketball")}
             cell.teamOneNameLabel.text = fixtureModel.event_home_team
-        }else {url = fixtureModel.event_away_team_logo
             cell.teamTwoNameLabel.text = fixtureModel.event_away_team
-        }
-            
-        case "Tennis":  if teamType == "home" {url = fixtureModel.event_first_player_logo
+        
+        case "Tennis":
+            if let urlHome = URL(string:fixtureModel.event_first_player_logo ?? ""){
+                cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Tennis"))
+            }else{cell.teamOneImage.image = UIImage(named: "placeholder_Tennis")}
+            if let urlAway = URL(string:fixtureModel.event_second_player_logo ?? ""){
+                cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named:"placeholder_Tennis"))
+            }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Tennis")}
             cell.teamOneNameLabel.text = fixtureModel.event_first_player
-        }else {url = fixtureModel.event_second_player_logo
             cell.teamTwoNameLabel.text = fixtureModel.event_second_player
-        }
+        
             
-        default:  if teamType == "home" {url = fixtureModel.home_team_logo
+        default:
+            if let urlHome = URL(string: fixtureModel.home_team_logo ?? ""){
+                cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Cricket"))
+            }else{cell.teamOneImage.image = UIImage(named: "placeholder_Cricket")}
+            if let urlAway = URL(string: fixtureModel.away_team_logo ?? ""){
+                cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named:"placeholder_Cricket"))
+            }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Cricket")}
             cell.teamOneNameLabel.text = fixtureModel.event_home_team
-
-        }else {url = fixtureModel.away_team_logo
             cell.teamTwoNameLabel.text = fixtureModel.event_away_team
-        }
-        }
         
-        
-        if let newUrl = url , let myUrl = URL(string: newUrl){
-            if teamType == "home"{
-                cell.teamOneImage.kf.setImage(with: myUrl)
-            }else{
-                cell.teamTwoImage.kf.setImage(with: myUrl)
-            }
         }
-        
     }
     
-    func displayLiveScoreDataUI(sportsName:String,liveScore : LiveScoreResult, cell: LivescoreCollectionViewCell , teamType: String){
-        var url : String! = ""
+
+    func displayLiveScoreDataUI(liveScore : LiveScoreResult, cell: LivescoreCollectionViewCell){
         
-        switch sportsName{
+        
+        switch sportName{
             
-        case "Football":  if teamType == "home" {
-            url = liveScore.home_team_logo
-            cell.teamOneNameLabel.text = liveScore.event_home_team
-        }
-            else {url = liveScore.away_team_logo
-                cell.teamTwoNameLabel.text = liveScore.event_away_team
-            }
+        case "Football":
             
-        case "Basketball":  if teamType == "home" {url = liveScore.event_home_team_logo
+            if let urlHome = URL(string: liveScore.home_team_logo ?? ""){
+                cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Football"))
+            }else{cell.teamOneImage.image = UIImage(named: "placeholder_Football")}
+            if let urlAway = URL(string: liveScore.away_team_logo ?? ""){
+                cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named: "placeholder_Football"))
+            }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Football")}
+            
             cell.teamOneNameLabel.text = liveScore.event_home_team
-        }else {url = liveScore.event_away_team_logo
             cell.teamTwoNameLabel.text = liveScore.event_away_team
-        }
+            cell.dateLabel.text = liveScore.event_date
+            cell.resultLabel.text = liveScore.event_final_result
             
-        case "Tennis":  if teamType == "home" {url = liveScore.event_first_player_logo
+            
+        case "Basketball":
+            if let urlHome = URL(string:  liveScore.event_home_team_logo ?? ""){
+                cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Basketball"))
+            }else{cell.teamOneImage.image = UIImage(named: "placeholder_Basketball")}
+            if let urlAway = URL(string:  liveScore.event_away_team_logo ?? ""){
+                cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named:"placeholder_Basketball"))
+            }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Basketball")}
+            cell.teamOneNameLabel.text = liveScore.event_home_team
+            cell.teamTwoNameLabel.text = liveScore.event_away_team
+            cell.dateLabel.text = liveScore.event_date
+            cell.resultLabel.text = liveScore.event_final_result
+
+            
+            
+        case "Tennis" :
+            if let urlHome = URL(string:liveScore.event_first_player_logo ?? ""){
+                cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Tennis"))
+            }else{cell.teamOneImage.image = UIImage(named: "placeholder_Tennis")}
+            if let urlAway = URL(string:liveScore.event_second_player_logo ?? ""){                cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named:"placeholder_Tennis"))
+            }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Tennis")}
             cell.teamOneNameLabel.text = liveScore.event_first_player
-        }else {url = liveScore.event_second_player_logo
             cell.teamTwoNameLabel.text = liveScore.event_second_player
-        }
+            cell.dateLabel.text = liveScore.event_date
+            cell.resultLabel.text = liveScore.event_final_result
+
             
-        default:  if teamType == "home" {url = liveScore.event_home_team_logo
+            
+        default:
+            if let urlHome = URL(string: liveScore.event_home_team_logo ?? ""){
+                cell.teamOneImage.kf.setImage(with: urlHome,placeholder: UIImage(named: "placeholder_Cricket"))
+            }else{cell.teamOneImage.image = UIImage(named: "placeholder_Cricket")}
+            if let urlAway = URL(string: liveScore.event_away_team_logo ?? ""){
+                cell.teamTwoImage.kf.setImage(with: urlAway,placeholder: UIImage(named:"placeholder_Cricket"))
+            }else{cell.teamTwoImage.image = UIImage(named: "placeholder_Cricket")}
             cell.teamOneNameLabel.text = liveScore.event_home_team
-
-        }else {url = liveScore.event_away_team_logo
             cell.teamTwoNameLabel.text = liveScore.event_away_team
-        }
-        }
-        
-        
-        if let newUrl = url , let myUrl = URL(string: newUrl){
-            if teamType == "home"{
-                cell.teamOneImage.kf.setImage(with: myUrl)
-            }else{
-                cell.teamTwoImage.kf.setImage(with: myUrl)
-            }
-        }
-        
-    }
+            cell.dateLabel.text = liveScore.event_date_start
+            cell.resultLabel.text = liveScore.event_home_final_result?.appending(" - ").appending((liveScore.event_away_final_result!))
 
+        }
+    }
     
-    
-    
-    
-    func fillTeamFromFixtures(sportsName: String , fixture:FixturesModel , teamType:String ){
-        var team : TeamsModel!
+    func fillTeamFromFixtures(fixture:FixturesModel ){
+        var teamHome : TeamsModel!
+        var teamAway : TeamsModel!
+
         if fixture != nil{
-            switch sportsName{
+            switch sportName{
                 
-            case "Football":  if teamType == "home" {
+            case "Football":
                 if let key = fixture.home_team_key , let logo = fixture.home_team_logo{
-                    team = TeamsModel(team_key: key,team_name: fixture.event_home_team!,team_logo:logo)
-                    
+                    teamHome = TeamsModel(team_key: key,team_name: fixture.event_home_team!,team_logo:logo)
                 }
-            
-            }else {
                 if let key = fixture.away_team_key , let logo = fixture.away_team_logo{
-                    team = TeamsModel(team_key: key,team_name: fixture.event_away_team!,team_logo:logo)}
+                    teamAway = TeamsModel(team_key: key,team_name: fixture.event_away_team!,team_logo:logo)
                 }
-              
-                
-            case "Basketball" ,"Cricket":  if teamType == "home" {
+            case "Basketball" ,"Cricket":
                 if let key = fixture.home_team_key , let logo = fixture.event_home_team_logo{
-                    team = TeamsModel(team_key: key,team_name: fixture.event_home_team!,team_logo:logo)                }
-              
-            }else {
+                    teamHome = TeamsModel(team_key: key,team_name: fixture.event_home_team!,team_logo:logo)  }
                 if let key = fixture.away_team_key , let logo = fixture.event_away_team_logo{
-                    team = TeamsModel(team_key: key,team_name: fixture.event_away_team!,team_logo:logo)
-                }
-            }
+                    teamAway = TeamsModel(team_key: key,team_name: fixture.event_away_team!,team_logo:logo)}
                 
-            default: if teamType == "home" {
+            default:
                 if let key = fixture.first_player_key , let logo = fixture.event_first_player_logo{
-                    team = TeamsModel(team_key:key,team_name: fixture.event_first_player!,team_logo:logo)
-                }
-          
-            }else {
+                    teamHome = TeamsModel(team_key:key,team_name: fixture.event_first_player!,team_logo:logo) }
                 if let key = fixture.second_player_key , let logo = fixture.event_second_player_logo{
-                    team = TeamsModel(team_key: key,team_name: fixture.event_second_player!,team_logo:logo)
-                }
-       
-                
-            }
+                    teamAway = TeamsModel(team_key: key,team_name: fixture.event_second_player!,team_logo:logo) }
             }
             
-            if !self.teamModel.contains(where: { $0.team_key == team.team_key }) {
-                if  team != nil {
-                    self.teamModel.append(team)
-                }
-            }
+            addTeamObject(team: teamHome)
+            addTeamObject(team: teamAway)
+
         }
         
     }
-    
+ 
+    func addTeamObject(team : TeamsModel?){
+        if !self.teamModel.contains(where: { $0.team_key == team?.team_key}){
+            if  let team1 = team {
+                self.teamModel.append(team1)
+            }
+        }
+    }
 }
 

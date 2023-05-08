@@ -11,7 +11,7 @@ class MockLiveScoreNetwork : LiveScoreNetworkProtocol{
     
     static  let liveScopeResponse = ConstantJsonString.liveScoreFootballJson
     
-    static func fetchResult(sportsName: String, comlitionHandler: @escaping (Sports.LiveScoreResponse?) -> Void) {
+    static func fetchResultLiveScore(sportsName: String, comlitionHandler: @escaping (Sports.LiveScoreResponse?) -> Void) {
         let data = Data(liveScopeResponse.utf8)
         do{
             let res = try JSONDecoder().decode(LiveScoreResponse.self, from: data)

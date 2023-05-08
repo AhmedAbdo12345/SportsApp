@@ -12,17 +12,35 @@ import UIKit
 class MyCoreData{
     
     var context : NSManagedObjectContext!
- 
     
     init(context: NSManagedObjectContext!) {
         self.context = context
     }
-   
-    func saveCoreData(id: Int,teamName:String,image: Data){
 
+    func saveCoreData(id: Int,teamName:String,image: Data){
+        //--------------------------------------------
+  /*      let fetchReq = NSFetchRequest<NSManagedObject>(entityName: "Team")
+        let predicate = NSPredicate(format: "name == %@", teamName)
+        fetchReq.predicate = predicate
+        do{
+            var  teamObject = try context?.fetch(fetchReq)
+            
+            if teamObject == nil {
+                return
+            }
+            
+            
+        }catch let error as NSError{
+            print(error.localizedDescription)
+        }*/
+        //--------------------------------------------
+        
+        
+     
         let entity = NSEntityDescription.entity(forEntityName: "Team", in: context)
         
         let team = NSManagedObject(entity: entity!, insertInto: context)
+        
         team.setValue(id, forKey: "id")
         team.setValue(teamName, forKey: "name")
  
@@ -41,11 +59,9 @@ class MyCoreData{
     }
     
     func fechCoreData() -> [TeamModelCoreData] {
-        var arrTeam : [TeamModelCoreData] = []
+     var arrTeam : [TeamModelCoreData] = []
         var team : TeamModelCoreData!
 
-
-        
         let fetchReq = NSFetchRequest<NSManagedObject>(entityName: "Team")
         do{
             var  arrTeams = try context.fetch(fetchReq)

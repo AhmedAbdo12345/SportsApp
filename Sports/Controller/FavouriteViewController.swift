@@ -17,7 +17,6 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     var favTeams : [TeamModelCoreData] = []
     var myCoreDate: MyCoreData!
     
-    
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
@@ -85,4 +84,13 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         150
     }
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+         var teamDetailsVC = self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController
+                
+                teamDetailsVC.sportName = "Football"
+                teamDetailsVC.teamId = favTeams[indexPath.row].team_key
+                self.navigationController?.pushViewController(teamDetailsVC, animated: true)
+    }
+ 
+    
 }

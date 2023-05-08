@@ -22,4 +22,5 @@ class LivescoreCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet weak var timeLabel: UILabel!
     
+    @IBOutlet weak var resultLabel: UILabel!
 }

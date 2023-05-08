@@ -49,8 +49,6 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
         }
     }
    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -63,7 +61,7 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
     override func viewWillAppear(_ animated: Bool) {
         
         if sportName == "Football"{
-            TeamsNetworkServices.fetchResult(sportsName: sportName.lowercased(), teamID: teamId){
+            DetailsNetworkService.fetchResultTeams(sportsName: sportName.lowercased(), teamID: teamId){
                 (res) in DispatchQueue.main.async {
                     
                     self.teamsResponse = res
@@ -72,8 +70,6 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
                    if let url = res?.result![0].team_logo ,let url = URL(string: url){
                         self.teamImage.kf.setImage(with: url)
                     }
-                   
-                    
                     self.playersTable.reloadData()
                     
                 }

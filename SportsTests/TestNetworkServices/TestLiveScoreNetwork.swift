@@ -12,7 +12,7 @@ final class TestLiveScoreNetwork: XCTestCase {
     
     func testFetchFootballLiveScoreFromAPI()  {
         let expectaion = expectation(description: "waiting for the API")
-        LiveScoreNetworkServices.fetchResult(sportsName: "football"){
+        LiveScoreNetworkServices.fetchResultLiveScore(sportsName: "football"){
             res  in
             guard let liveScoreList = res else{
                 XCTFail()

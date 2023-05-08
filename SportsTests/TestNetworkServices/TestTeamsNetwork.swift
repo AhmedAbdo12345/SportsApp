@@ -12,7 +12,7 @@ final class TestTeamsNetwork: XCTestCase {
 
     func testFetchFootballTeamsFromAPI()  {
         let expectaion = expectation(description: "waiting for the API")
-        TeamsNetworkServices.fetchResult(sportsName: "football", teamID: 4){
+        TeamsNetworkServices.fetchResultTeams(sportsName: "football", teamID: 4){
             res  in
             guard let teamsList = res else{
                 XCTFail()

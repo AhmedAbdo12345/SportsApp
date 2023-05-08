@@ -17,7 +17,7 @@ final class TestFixturesNetwork: XCTestCase {
        let nextDate = Calendar.current.date(byAdding: .day, value: 7, to: currentDate)!
        
         let expectaion = expectation(description: "waiting for the API")
-        FixturesNetworkServices.fetchResult(sportsName: "football", leagueID: 4, dateFrom: currentDate, dateTo: nextDate){
+        FixturesNetworkServices.fetchResultFixtures(sportsName: "football", leagueID: 4, dateFrom: currentDate, dateTo: nextDate){
             res  in
             guard let fixturesList = res else{
                 XCTFail()

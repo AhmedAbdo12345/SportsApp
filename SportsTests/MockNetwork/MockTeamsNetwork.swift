@@ -12,7 +12,7 @@ class MockTeamsNetwork : TeamsNetworkProtocol{
     
     static  let teamsResponse = ConstantJsonString.teamsFootballJson
     
-    static func fetchResult(sportsName: String, teamID: Int, comlitionHandler: @escaping (Sports.TeamsResponse?) -> Void) {
+    static func fetchResultTeams(sportsName: String, teamID: Int, comlitionHandler: @escaping (Sports.TeamsResponse?) -> Void) {
         let data = Data(teamsResponse.utf8)
         do{
             let res = try JSONDecoder().decode(TeamsResponse.self, from: data)

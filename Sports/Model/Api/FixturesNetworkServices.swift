@@ -7,14 +7,14 @@
 
 import Foundation
 protocol FixtureNetworkProtocol{
-    static func fetchResult(sportsName:String,leagueID:Int, dateFrom:Date ,dateTo:Date,comlitionHandler: @escaping (FixturesResponse?)-> Void)
+    static func fetchResultFixtures(sportsName:String,leagueID:Int, dateFrom:Date ,dateTo:Date,comlitionHandler: @escaping (FixturesResponse?)-> Void)
     
 }
 class FixturesNetworkServices : FixtureNetworkProtocol{
  
     
     
-    static func fetchResult(sportsName:String,leagueID:Int,  dateFrom:Date ,dateTo:Date,comlitionHandler: @escaping (FixturesResponse?)-> Void) {
+    static func fetchResultFixtures(sportsName:String,leagueID:Int,  dateFrom:Date ,dateTo:Date,comlitionHandler: @escaping (FixturesResponse?)-> Void) {
         
         let dateFormatter = DateFormatter()
         dateFormatter.locale = Locale(identifier: "en_US_POSIX")

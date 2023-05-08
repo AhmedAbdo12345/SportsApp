@@ -7,12 +7,12 @@
 
 import Foundation
 protocol TeamsNetworkProtocol{
-    static func fetchResult(sportsName:String,teamID:Int,comlitionHandler: @escaping (TeamsResponse?)-> Void)
+    static func fetchResultTeams(sportsName:String,teamID:Int,comlitionHandler: @escaping (TeamsResponse?)-> Void)
     
 }
 class TeamsNetworkServices : TeamsNetworkProtocol{
  
-    static func fetchResult(sportsName:String,teamID:Int, comlitionHandler: @escaping (TeamsResponse?)-> Void) {
+    static func fetchResultTeams(sportsName:String,teamID:Int, comlitionHandler: @escaping (TeamsResponse?)-> Void) {
                
         var url = "https://apiv2.allsportsapi.com/\(sportsName)/?&met=Teams&teamId=\(teamID)&APIkey=243e9ed7ab60d0f2b0c1cbf0cf44824fce00282296cf3dfae234a42e399f03ba"
 

@@ -7,14 +7,14 @@
 
 import Foundation
 protocol LiveScoreNetworkProtocol{
-    static func fetchResult(sportsName:String,comlitionHandler: @escaping (LiveScoreResponse?)-> Void)
+    static func fetchResultLiveScore(sportsName:String,comlitionHandler: @escaping (LiveScoreResponse?)-> Void)
     
 }
 class LiveScoreNetworkServices : LiveScoreNetworkProtocol{
  
     
     
-    static func fetchResult(sportsName:String, comlitionHandler: @escaping (LiveScoreResponse?)-> Void) {
+    static func fetchResultLiveScore(sportsName:String, comlitionHandler: @escaping (LiveScoreResponse?)-> Void) {
                
         var url = "https://apiv2.allsportsapi.com/\(sportsName)/?met=Livescore&APIkey=243e9ed7ab60d0f2b0c1cbf0cf44824fce00282296cf3dfae234a42e399f03ba"
       

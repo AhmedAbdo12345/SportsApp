@@ -49,10 +49,8 @@ class SportsTableViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "leagueCell", for: indexPath)as! SportsTableViewCell
         
 
-        if leaguesResponse?.result![indexPath.row].league_logo != nil
-        {
-            let url = URL(string: (leaguesResponse?.result![indexPath.row].league_logo)!)
-            cell.leagueImage.kf.setImage(with: url)
+        if let url = URL(string: leaguesResponse?.result![indexPath.row].league_logo ?? "" ){
+            cell.leagueImage.kf.setImage(with: url,placeholder: UIImage(named: "placeholder_leagues"))
         }else{
             switch sportName{
             case "Football": cell.leagueImage.image = UIImage(named: "football_img")
