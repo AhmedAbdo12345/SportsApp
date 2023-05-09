@@ -9,26 +9,27 @@ import UIKit
 import Kingfisher
 import CoreData
 
-class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITableViewDataSource{
+protocol TeamsDetailsProtocol{
+    func getTeamsDetailsFromApi(teamsResponse: TeamsResponse)
+}
+
+
+class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITableViewDataSource , TeamsDetailsProtocol{
+    
     
     var myContext : NSManagedObjectContext!
-
     var sportName = ""
     var teamId = 0
-    
-    
     var teamsResponse: TeamsResponse!
     
     
     @IBOutlet weak var teamNameLabel: UILabel!
     
-    
     @IBOutlet weak var teamImage: UIImageView!
-    
     
     @IBOutlet weak var playersTable: UITableView!
     
- 
+
     @IBAction func favButton(_ sender: UIButton) {
         if teamsResponse != nil {
             var image : Data!
@@ -48,7 +49,17 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
             
         }
     }
-   
+    
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if sportName == "Football"{
+            
+           var teamsPresenter = TeamsDetailsPresenter()
+            teamsPresenter.getTeamDetails(sportName: sportName, teamId: teamId, view: self)
+       
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -57,25 +68,18 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
         
         self.playersTable.reloadData()
         }
+    
+    func getTeamsDetailsFromApi(teamsResponse: TeamsResponse) {
+        self.teamsResponse = teamsResponse
+
+        self.teamNameLabel.text = teamsResponse.result![0].team_name
         
-    override func viewWillAppear(_ animated: Bool) {
-        
-        if sportName == "Football"{
-            DetailsNetworkService.fetchResultTeams(sportsName: sportName.lowercased(), teamID: teamId){
-                (res) in DispatchQueue.main.async {
-                    
-                    self.teamsResponse = res
-                    self.teamNameLabel.text = res?.result![0].team_name
-                    
-                   if let url = res?.result![0].team_logo ,let url = URL(string: url){
-                        self.teamImage.kf.setImage(with: url)
-                    }
-                    self.playersTable.reloadData()
-                    
-                }
-            }
+        if let url = teamsResponse.result![0].team_logo ,let url = URL(string: url){
+            self.teamImage.kf.setImage(with: url)
         }
+        self.playersTable.reloadData()
     }
+    
 
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -89,7 +93,9 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
         
         if let url = teamsResponse?.result![0].players[indexPath.row].player_image ,
            let url = URL(string: url){
-            cell.playerImage.kf.setImage(with: url)
+            cell.playerImage.kf.setImage(with: url, options: [.processor(RoundCornerImageProcessor(cornerRadius:  cell.playerImage.frame.width/2))])
+            cell.playerImage.layer.cornerRadius =  cell.playerImage.frame.width/2
+            cell.playerImage.clipsToBounds = true
             
         }
         cell.playerNameLabel.text = teamsResponse?.result![0].players[indexPath.row].player_name

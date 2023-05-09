@@ -8,10 +8,22 @@
 import UIKit
 import Kingfisher
 import Reachability
-class SportsTableViewController: UITableViewController {
 
+protocol LeaguesProtocol{
+    
+    func getLeaguesFromApi(leaguesResponse: LeaguesResponse)
+}
+
+
+class SportsTableViewController: UITableViewController ,  LeaguesProtocol{
     var sportName = ""
    var leaguesResponse: LeaguesResponse?
+    
+    func getLeaguesFromApi(leaguesResponse: LeaguesResponse) {
+        self.leaguesResponse = leaguesResponse
+        self.tableView.reloadData()
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,14 +36,16 @@ class SportsTableViewController: UITableViewController {
         var  reachability = try! Reachability()
            var myNetworkConnection = MyNetworConnection(reachability: reachability)
              if myNetworkConnection.isReachableViaWiFi() {
-                 NetworkService.fetchResult(sportName: sportName.lowercased()){
+              /*   NetworkService.fetchResult(sportName: sportName.lowercased()){
                      (res) in DispatchQueue.main.async {
                          
                          self.leaguesResponse = res
                          self.tableView.reloadData()
                          
                      }
-                 }
+                 }*/
+                 var leaguesPresenter = LeaguesPresenter()
+                 leaguesPresenter.getLeagues(sportName: sportName, view: self)
         }
     }
 
@@ -54,6 +68,7 @@ class SportsTableViewController: UITableViewController {
 
         if let url = URL(string: leaguesResponse?.result![indexPath.row].league_logo ?? "" ){
             cell.leagueImage.kf.setImage(with: url,placeholder: UIImage(named: "placeholder_leagues"))
+            
         }else{
             switch sportName{
             case "Football": cell.leagueImage.image = UIImage(named: "football_img")

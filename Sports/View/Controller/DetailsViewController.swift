@@ -7,7 +7,15 @@
 
 import UIKit
 import Reachability
-class DetailsViewController: UIViewController ,UICollectionViewDataSource,UICollectionViewDelegate{
+
+protocol DetailsProtocol{
+    func getFixturesFromApi(fixturesResponse: FixturesResponse)
+    func getLiveScoreFromApi(liveScoreResponse: LiveScoreResponse)
+}
+
+
+class DetailsViewController: UIViewController ,UICollectionViewDataSource,UICollectionViewDelegate, DetailsProtocol{
+ 
     
     var fixturesResponse: FixturesResponse?
     var liveScoreResponse: LiveScoreResponse?
@@ -16,6 +24,30 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
     var teamModel : [TeamsModel] = []
     var leagueID: Int?
     var sportName = ""
+    
+    
+    func getFixturesFromApi(fixturesResponse: FixturesResponse) {
+        
+        self.fixturesResponse = fixturesResponse
+        
+        if let model = fixturesResponse.result {
+            self.fixturesModel = model
+            
+        }
+        for fixture in fixturesModel{
+            fillTeamFromFixtures(fixture: fixture)
+        }
+        
+        self.fixturesCollectionView.reloadData()
+        self.teamsCollectionView.reloadData()
+    }
+    
+    func getLiveScoreFromApi(liveScoreResponse: LiveScoreResponse) {
+        
+        self.liveScoreResponse = liveScoreResponse
+        self.liveScoreCollectionView.reloadData()
+    }
+    
     
     
     @IBOutlet weak var emptyFixtureImage: UIImageView!
@@ -45,40 +77,18 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
         }
     }
     override func viewWillAppear(_ animated: Bool) {
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let currentDate = Date()
-        let nextDate = Calendar.current.date(byAdding: .day, value: 15, to: currentDate)!
+
         var  reachability = try! Reachability()
            var myNetworkConnection = MyNetworConnection(reachability: reachability)
              
              if myNetworkConnection.isReachableViaWiFi() {
                  
-        DetailsNetworkService.fetchResultFixtures(sportsName:sportName.lowercased(),leagueID:leagueID!, dateFrom: currentDate, dateTo:nextDate){
-            (res) in DispatchQueue.main.async { [self] in
-                
-                self.fixturesResponse = res
-                
-                if res?.result != nil{
-                    self.fixturesModel = (res?.result)!
-                    
-                }
-                for fixture in fixturesModel{
-                    fillTeamFromFixtures(fixture: fixture)
-                }
-                
-                self.fixturesCollectionView.reloadData()
-                self.teamsCollectionView.reloadData()
-            }
-        }
-        
-        DetailsNetworkService.fetchResultLiveScore(sportsName:sportName.lowercased()){
-            (res) in DispatchQueue.main.async {
-                
-                self.liveScoreResponse = res
-                self.liveScoreCollectionView.reloadData()
-            }
-        }
+            var fixturePresenter = FixturesPresenter()
+                 fixturePresenter.getFixtures(sportName: sportName, leaguesID: leagueID!, view: self)
+                 
+            var liveScorePresenter = LiveScorePresenter()
+                 liveScorePresenter.getLiveScore(sportName: sportName, view: self)
+     
     }
     }
     

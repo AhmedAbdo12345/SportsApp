@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		A979BD5AFBDDD50BB8573913 /* Pods_Sports.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A9703701A10F3F6B5760152C /* Pods_Sports.framework */; };
+		E21A54622A0A3BD800EB6FBA /* LeaguesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21A54612A0A3BD800EB6FBA /* LeaguesPresenter.swift */; };
+		E21A54642A0A3BF300EB6FBA /* FixturesPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21A54632A0A3BF300EB6FBA /* FixturesPresenter.swift */; };
+		E21A54662A0A3C0B00EB6FBA /* LiveScorePresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21A54652A0A3C0B00EB6FBA /* LiveScorePresenter.swift */; };
+		E21A54682A0A61EB00EB6FBA /* TeamsDetailsPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E21A54672A0A61EB00EB6FBA /* TeamsDetailsPresenter.swift */; };
 		E23D21862A05544A000B8E57 /* LiveScoreNetworkServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D21852A05544A000B8E57 /* LiveScoreNetworkServices.swift */; };
 		E23D21892A057406000B8E57 /* TeamsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D21882A057406000B8E57 /* TeamsResponse.swift */; };
 		E23D218B2A0581B2000B8E57 /* TeamsNetworkServices.swift in Sources */ = {isa = PBXBuildFile; fileRef = E23D218A2A0581B2000B8E57 /* TeamsNetworkServices.swift */; };
@@ -69,6 +73,10 @@
 		58A819EC4E6D51AF6855FABA /* Pods-Sports.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sports.release.xcconfig"; path = "Target Support Files/Pods-Sports/Pods-Sports.release.xcconfig"; sourceTree = "<group>"; };
 		A9703701A10F3F6B5760152C /* Pods_Sports.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sports.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DF272AB7DC1677CCA5184371 /* Pods-Sports.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sports.debug.xcconfig"; path = "Target Support Files/Pods-Sports/Pods-Sports.debug.xcconfig"; sourceTree = "<group>"; };
+		E21A54612A0A3BD800EB6FBA /* LeaguesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaguesPresenter.swift; sourceTree = "<group>"; };
+		E21A54632A0A3BF300EB6FBA /* FixturesPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixturesPresenter.swift; sourceTree = "<group>"; };
+		E21A54652A0A3C0B00EB6FBA /* LiveScorePresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveScorePresenter.swift; sourceTree = "<group>"; };
+		E21A54672A0A61EB00EB6FBA /* TeamsDetailsPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsDetailsPresenter.swift; sourceTree = "<group>"; };
 		E23D21852A05544A000B8E57 /* LiveScoreNetworkServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveScoreNetworkServices.swift; sourceTree = "<group>"; };
 		E23D21882A057406000B8E57 /* TeamsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsResponse.swift; sourceTree = "<group>"; };
 		E23D218A2A0581B2000B8E57 /* TeamsNetworkServices.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamsNetworkServices.swift; sourceTree = "<group>"; wrapsLines = 0; };
@@ -155,6 +163,17 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		E21A54602A0A373F00EB6FBA /* Presenter */ = {
+			isa = PBXGroup;
+			children = (
+				E21A54612A0A3BD800EB6FBA /* LeaguesPresenter.swift */,
+				E21A54632A0A3BF300EB6FBA /* FixturesPresenter.swift */,
+				E21A54652A0A3C0B00EB6FBA /* LiveScorePresenter.swift */,
+				E21A54672A0A61EB00EB6FBA /* TeamsDetailsPresenter.swift */,
+			);
+			path = Presenter;
+			sourceTree = "<group>";
+		};
 		E23D21872A056D49000B8E57 /* Pojo */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,7 +209,7 @@
 		E24BF11E2A0050AA00F3D091 /* Sports */ = {
 			isa = PBXGroup;
 			children = (
-				E2B43AA92A03F2550028E0E5 /* Controller */,
+				E21A54602A0A373F00EB6FBA /* Presenter */,
 				E24CA2282A01469500158337 /* View */,
 				E24CA2272A01468D00158337 /* Model */,
 				E24BF11F2A0050AA00F3D091 /* AppDelegate.swift */,
@@ -217,6 +236,7 @@
 		E24CA2282A01469500158337 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				E2B43AA92A03F2550028E0E5 /* Controller */,
 				E29C1D142A06CAED00E4A80C /* TableCell */,
 				E29C1D132A06CACE00E4A80C /* CollectionCell */,
 				E24BF12D2A0050AC00F3D091 /* LaunchScreen.storyboard */,
@@ -474,12 +494,15 @@
 				E24BF13F2A00647100F3D091 /* HomeCollectionViewCell.swift in Sources */,
 				E24BF1242A0050AA00F3D091 /* ViewController.swift in Sources */,
 				E24BF1202A0050AA00F3D091 /* AppDelegate.swift in Sources */,
+				E21A54642A0A3BF300EB6FBA /* FixturesPresenter.swift in Sources */,
 				E23D21892A057406000B8E57 /* TeamsResponse.swift in Sources */,
 				E2EBDD8D2A016DDE00AE3EBC /* SportsTableViewCell.swift in Sources */,
 				E24BF12A2A0050AA00F3D091 /* Sports.xcdatamodeld in Sources */,
+				E21A54662A0A3C0B00EB6FBA /* LiveScorePresenter.swift in Sources */,
 				E2B43AB12A04271D0028E0E5 /* LivescoreCollectionViewCell.swift in Sources */,
 				E2DB1C8F2A010F04000B60A5 /* SportsTableViewController.swift in Sources */,
 				E2B43AB32A0428750028E0E5 /* TeamsCollectionViewCell.swift in Sources */,
+				E21A54682A0A61EB00EB6FBA /* TeamsDetailsPresenter.swift in Sources */,
 				E2AC84722A0880630088E754 /* DetailsNetworkService.swift in Sources */,
 				E27D9B2F2A04B6C5002A2883 /* LiveScoreResponse.swift in Sources */,
 				E27D9B352A04BC41002A2883 /* FixturesNetworkServices.swift in Sources */,
@@ -496,6 +519,7 @@
 				E23D218B2A0581B2000B8E57 /* TeamsNetworkServices.swift in Sources */,
 				E2B43AAF2A0416140028E0E5 /* FixturesCollectionViewCell.swift in Sources */,
 				E2EBDD912A0182E900AE3EBC /* DetailsViewController.swift in Sources */,
+				E21A54622A0A3BD800EB6FBA /* LeaguesPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

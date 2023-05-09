@@ -9,6 +9,8 @@ import UIKit
 import Kingfisher
 import CoreData
 import Reachability
+
+
 class FavouriteViewController: UIViewController , UITableViewDelegate,UITableViewDataSource{
     
     @IBOutlet weak var favTable: UITableView!
