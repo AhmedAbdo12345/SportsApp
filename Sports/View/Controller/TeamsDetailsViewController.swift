@@ -101,12 +101,32 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
         cell.playerNameLabel.text = teamsResponse?.result![0].players[indexPath.row].player_name
         cell.playerNumberLabel.text = teamsResponse?.result![0].players[indexPath.row].player_number
 
-        
+        cell.buttonAction = { [self] currentCell in
+            if teamsResponse != nil {
+                var image : Data!
+                var myCoreDate = MyCoreData(context: myContext)
+                image = currentCell.playerImage.image?.pngData()
+            var playerNumberString = (currentCell.playerNumberLabel.text ) ?? "0"
+                
+                myCoreDate.saveCoreData(id: Int(playerNumberString) ?? 0, teamName: currentCell.playerNameLabel.text!, image: image)
+           
+                
+                let  alert = UIAlertController(title: "Saved", message: "Team Add SuccessFully in Favourite", preferredStyle: .alert)
+                     alert.addAction(UIAlertAction(title: "Ok", style: .destructive,handler: { [self] action in
+                    
+                    }))
+                 
+                self.present(alert, animated: true)
+                                }
+           }
         return cell
     }
     
+ 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 150
 
     }
+    
+   
 }

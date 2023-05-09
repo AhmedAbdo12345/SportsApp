@@ -19,43 +19,25 @@ class MyCoreData{
 
     func saveCoreData(id: Int,teamName:String,image: Data){
         //--------------------------------------------
-  /*      let fetchReq = NSFetchRequest<NSManagedObject>(entityName: "Team")
-        let predicate = NSPredicate(format: "name == %@", teamName)
-        fetchReq.predicate = predicate
-        do{
-            var  teamObject = try context?.fetch(fetchReq)
+        if  fetchTeam(teamKey:id) == nil{
+            let entity = NSEntityDescription.entity(forEntityName: "Team", in: context)
             
-            if teamObject == nil {
-                return
+            let team = NSManagedObject(entity: entity!, insertInto: context)
+            
+            team.setValue(id, forKey: "id")
+            team.setValue(teamName, forKey: "name")
+            
+            if image != nil{
+                team.setValue(image, forKey: "image")
             }
             
-            
-        }catch let error as NSError{
-            print(error.localizedDescription)
-        }*/
-        //--------------------------------------------
-        
-        
-     
-        let entity = NSEntityDescription.entity(forEntityName: "Team", in: context)
-        
-        let team = NSManagedObject(entity: entity!, insertInto: context)
-        
-        team.setValue(id, forKey: "id")
-        team.setValue(teamName, forKey: "name")
- 
-        if image != nil{
-            team.setValue(image, forKey: "image")
+            do{
+                try context?.save()
+                
+            }catch let error as NSError{
+                print(error.localizedDescription)
+            }
         }
-        
-        do{
-            try context?.save()
-            
-        }catch let error as NSError{
-            print(error.localizedDescription)
-        }
-
-
     }
     
     func fechCoreData() -> [TeamModelCoreData] {
@@ -101,4 +83,17 @@ class MyCoreData{
         
         
     }
+    
+    func fetchTeam(teamKey: Int) -> NSManagedObject? {
+            let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "Team")
+            let predicate = NSPredicate(format: "id == %d", teamKey)
+            fetchRequest.predicate = predicate
+            do {
+                let teams = try context?.fetch(fetchRequest)
+                return teams?.first
+            } catch let error as NSError {
+                print(error.localizedDescription)
+                return nil
+            }
+        }
 }

@@ -20,4 +20,13 @@ class PlayersTableViewCell: UITableViewCell {
     
   
 
+    
+    @IBOutlet weak var playerFavButton: UIButton!
+    
+    var buttonAction: ((PlayersTableViewCell) -> Void)?
+    
+    @IBAction func playFavAction(_ sender: Any) {
+        buttonAction?(self)
+
+    }
 }
