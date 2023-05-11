@@ -13,7 +13,10 @@ class LiveScorePresenter{
         DetailsNetworkService.fetchResultLiveScore(sportsName:sportName.lowercased()){
             (res) in DispatchQueue.main.async {
                 
-                view.getLiveScoreFromApi(liveScoreResponse: res!)
+                if let result = res {
+            view.getLiveScoreFromApi(liveScoreResponse: result)
+
+                }
             }
         }
     }

@@ -19,8 +19,10 @@ class FixturesPresenter{
         
         DetailsNetworkService.fetchResultFixtures(sportsName:sportName.lowercased(),leagueID:leaguesID, dateFrom: currentDate, dateTo:nextDate){
              (res) in DispatchQueue.main.async { [self] in
-                 
-                 view.getFixturesFromApi(fixturesResponse: res!)
+                 if let result = res {
+                     view.getFixturesFromApi(fixturesResponse: result)
+
+                 }
           
              }
          }

@@ -34,11 +34,50 @@ final class TestFixturesNetwork: XCTestCase {
             XCTAssertNotEqual(fixturesList.result?.count, 0,"API Failed")
             expectaion.fulfill()
         }
-        waitForExpectations(timeout: 5)
+       // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+        waitForExpectations(timeout: 30, handler: nil)
         
     }
-
-
+    func testFetchFootballFixturesFromAPICheckResponsIsNil()  {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+    
+        
+         let expectaion = expectation(description: "waiting for the API")
+        FixturesNetworkServices.fetchResultFixtures(sportsName: "football", leagueID: -1, dateFrom: currentDate, dateTo: nextDate){
+             res  in
+             guard let fixturesList = res else{
+                 XCTFail()
+                 expectaion.fulfill()
+                 return
+             }
+            XCTAssertNil(res?.result)
+             expectaion.fulfill()
+         }
+        // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+         waitForExpectations(timeout: 30, handler: nil)
+         
+     }
+   func testFetchBasketballlFixturesFromAPI()  {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+    
+        
+         let expectaion = expectation(description: "waiting for the API")
+         FixturesNetworkServices.fetchResultFixtures(sportsName: "basketball", leagueID: 4, dateFrom: currentDate, dateTo: nextDate){
+             res  in
+             guard let fixturesList = res else{
+                 XCTFail()
+                 expectaion.fulfill()
+                 return
+             }
+             XCTAssertNotEqual(fixturesList.result?.count, 0,"API Failed")
+             expectaion.fulfill()
+         }
+       // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+         waitForExpectations(timeout: 30)
+         
+     }
     
     func testChangeDateFormateMethod()  {
         // Given

@@ -13,7 +13,10 @@ class LeaguesPresenter{
             NetworkService.fetchResult(sportName: sportName.lowercased()){
                 (res) in DispatchQueue.main.async {
                     
-                    view.getLeaguesFromApi(leaguesResponse:res!)
+                    if let result = res{
+                        view.getLeaguesFromApi(leaguesResponse:result)
+
+                    }
                     
                 }
             }

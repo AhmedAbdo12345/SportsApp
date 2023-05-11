@@ -25,14 +25,20 @@ class LiveScoreNetworkServices : LiveScoreNetworkProtocol{
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: req){
             data , response, error in
-            do{
-                let res = try JSONDecoder().decode(LiveScoreResponse.self, from: data!)
-                comlitionHandler(res)
-            }catch let error{
-                print(error.localizedDescription)
-                comlitionHandler(nil)
+            if let  data = data {
+                do{
+                    let res = try JSONDecoder().decode(LiveScoreResponse.self, from: data )
+                    comlitionHandler(res)
+                }catch let error{
+                    print(error.localizedDescription)
+                    comlitionHandler(nil)
 
-            }
+                }
+            }else{
+                   print("Error: data object is nil")
+               }
+            
+          
         }
         task.resume()
     }

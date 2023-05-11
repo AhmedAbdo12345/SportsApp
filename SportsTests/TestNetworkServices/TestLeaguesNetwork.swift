@@ -21,8 +21,57 @@ final class TestLeaguesNetwork: XCTestCase {
             XCTAssertNotEqual(leaguesList.result?.count, 0,"API Failed")
             expectaion.fulfill()
         }
-        waitForExpectations(timeout: 5)
+        // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+        waitForExpectations(timeout: 50)
         
     }
 
+    func testFetchBasketballLeaguesFromAPI()  {
+        let expectaion = expectation(description: "waiting for the API")
+        NetworkService.fetchResult(sportName: "basketball"){
+            res  in
+            guard let leaguesList = res else{
+                XCTFail()
+                expectaion.fulfill()
+                return
+            }
+            XCTAssertNotEqual(leaguesList.result?.count, 0,"API Failed")
+            expectaion.fulfill()
+        }
+        // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+        waitForExpectations(timeout: 50)
+        
+    }
+    func testFetchTennisLeaguesFromAPI()  {
+        let expectaion = expectation(description: "waiting for the API")
+        NetworkService.fetchResult(sportName: "tennis"){
+            res  in
+            guard let leaguesList = res else{
+                XCTFail()
+                expectaion.fulfill()
+                return
+            }
+            XCTAssertNotEqual(leaguesList.result?.count, 0,"API Failed")
+            expectaion.fulfill()
+        }
+        // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+        waitForExpectations(timeout: 50)
+        
+    }
+    func testFetchCricketLeaguesFromAPI()  {
+        let expectaion = expectation(description: "waiting for the API")
+        NetworkService.fetchResult(sportName: "cricket"){
+            res  in
+            guard let leaguesList = res else{
+                XCTFail()
+                expectaion.fulfill()
+                return
+            }
+            XCTAssertNotEqual(leaguesList.result?.count, 0,"API Failed")
+            expectaion.fulfill()
+        }
+        // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+        waitForExpectations(timeout: 50)
+        
+    }
 }

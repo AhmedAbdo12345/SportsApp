@@ -13,7 +13,9 @@ class TeamsDetailsPresenter{
         DetailsNetworkService.fetchResultTeams(sportsName: sportName.lowercased(), teamID: teamId){
             (res) in DispatchQueue.main.async {
                 
-                view.getTeamsDetailsFromApi(teamsResponse: res!)                
+                if let result = res {
+                    view.getTeamsDetailsFromApi(teamsResponse: result)
+                }
                 
             }
         }

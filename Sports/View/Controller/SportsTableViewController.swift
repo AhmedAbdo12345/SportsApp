@@ -15,15 +15,29 @@ protocol LeaguesProtocol{
 }
 
 
-class SportsTableViewController: UITableViewController ,  LeaguesProtocol{
+class SportsTableViewController: UITableViewController , UISearchBarDelegate, LeaguesProtocol{
+    
+    @IBOutlet weak var searchBar: UISearchBar!
+    
+    
+    
     var sportName = ""
    var leaguesResponse: LeaguesResponse?
-    
+    var searchResponse: [LeaguesResult] = []
     func getLeaguesFromApi(leaguesResponse: LeaguesResponse) {
         self.leaguesResponse = leaguesResponse
         self.tableView.reloadData()
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchText.isEmpty{
+            searchResponse = leaguesResponse?.result ?? []
+
+        }else{
+            searchResponse = (leaguesResponse?.result?.filter { $0.league_name?.lowercased().contains(searchText.lowercased()) ?? false}) ?? []
+        }
+        self.tableView.reloadData()
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -58,15 +72,23 @@ class SportsTableViewController: UITableViewController ,  LeaguesProtocol{
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete implementation, return the number of rows
-        return leaguesResponse?.result?.count ?? 0
+     //   return leaguesResponse?.result?.count ?? 0
+        if searchBar.text == ""{
+            return leaguesResponse?.result?.count ?? 0
+        }else{
+            return searchResponse.count ?? 0
+        }
     }
 
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "leagueCell", for: indexPath)as! SportsTableViewCell
         
+        if searchBar.text == ""{
+            searchResponse = leaguesResponse?.result ?? []
+        }
 
-        if let url = URL(string: leaguesResponse?.result![indexPath.row].league_logo ?? "" ){
+        if let url = URL(string: searchResponse[indexPath.row].league_logo ?? "" ){
             cell.leagueImage.kf.setImage(with: url,placeholder: UIImage(named: "placeholder_leagues"))
             
         }else{
@@ -77,7 +99,7 @@ class SportsTableViewController: UITableViewController ,  LeaguesProtocol{
             default: cell.leagueImage.image = UIImage(named: "cricket_img")
             }
         }
-      cell.leagueLabel.text = leaguesResponse?.result![indexPath.row].league_name
+      cell.leagueLabel.text = searchResponse[indexPath.row].league_name
 
 
         return cell
@@ -96,7 +118,7 @@ class SportsTableViewController: UITableViewController ,  LeaguesProtocol{
       if myNetworkConnection.isReachableViaWiFi() {
           var detailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "details") as! DetailsViewController
           detailsVC.sportName = sportName
-          detailsVC.leagueID = leaguesResponse?.result![indexPath.row].league_key
+          detailsVC.leagueID = searchResponse[indexPath.row].league_key
           self.navigationController?.pushViewController(detailsVC, animated: true)
           
         }else{
