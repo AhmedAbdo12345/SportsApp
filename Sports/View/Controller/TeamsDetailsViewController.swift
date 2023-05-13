@@ -33,7 +33,8 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
     @IBAction func favButton(_ sender: UIButton) {
         if teamsResponse != nil {
             var image : Data!
-            var myCoreDate = MyCoreData(context: myContext)
+            var myCoreDate = MyCoreData.getInstantCoreData()
+            myCoreDate.sendContextToCoreData(context: myContext)
             if teamImage.image != nil {
              image = teamImage.image?.pngData()
             }
@@ -104,7 +105,8 @@ class TeamsDetailsViewController: UIViewController , UITableViewDelegate,UITable
         cell.buttonAction = { [self] currentCell in
             if teamsResponse != nil {
                 var image : Data!
-                var myCoreDate = MyCoreData(context: myContext)
+                var myCoreDate = MyCoreData.getInstantCoreData()
+                myCoreDate.sendContextToCoreData(context: myContext)
                 image = currentCell.playerImage.image?.pngData()
             var playerNumberString = (currentCell.playerNumberLabel.text ) ?? "0"
                 

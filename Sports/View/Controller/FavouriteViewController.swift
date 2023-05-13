@@ -49,7 +49,9 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         myContext = appDelegate.persistentContainer.viewContext
         
-         myCoreDate = MyCoreData(context: myContext)
+        myCoreDate = MyCoreData.getInstantCoreData()
+        myCoreDate.sendContextToCoreData(context: myContext)
+        
         favTeams = myCoreDate.fechCoreData()
         
         favTable.reloadData()
@@ -94,7 +96,8 @@ class FavouriteViewController: UIViewController , UITableViewDelegate,UITableVie
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
    var  reachability = try! Reachability()
-      var myNetworkConnection = MyNetworConnection(reachability: reachability)
+        var myNetworkConnection = MyNetworConnection.getInstantNetworConnection()
+        myNetworkConnection.sendReachability(reachability: reachability)
         
         if myNetworkConnection.isReachableViaWiFi() {
             var teamDetailsVC = self.storyboard?.instantiateViewController(withIdentifier: "teamsDetails") as! TeamsDetailsViewController

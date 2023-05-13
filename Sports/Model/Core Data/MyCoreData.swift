@@ -11,11 +11,26 @@ import UIKit
 
 class MyCoreData{
     
-    var context : NSManagedObjectContext!
+       var context : NSManagedObjectContext!
+     private static var instantCoreData : MyCoreData!
     
-    init(context: NSManagedObjectContext!) {
+    
+    private init(){
+        
+    }
+    func sendContextToCoreData(context: NSManagedObjectContext!){
         self.context = context
     }
+    
+  static  func getInstantCoreData() -> MyCoreData{
+      if instantCoreData != nil{
+            return instantCoreData
+        }else{
+            instantCoreData = MyCoreData()
+        return instantCoreData
+        }
+    }
+    
 
     func saveCoreData(id: Int,teamName:String,image: Data){
         //--------------------------------------------

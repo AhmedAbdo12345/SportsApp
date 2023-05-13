@@ -64,7 +64,8 @@ UICollectionViewDelegateFlowLayout{
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         
         var  reachability = try! Reachability()
-           var myNetworkConnection = MyNetworConnection(reachability: reachability)
+        var myNetworkConnection = MyNetworConnection.getInstantNetworConnection()
+        myNetworkConnection.sendReachability(reachability: reachability)
              
       if myNetworkConnection.isReachableViaWiFi() {
         var sportsTVC =  self.storyboard?.instantiateViewController(withIdentifier: "sportsTable") as! SportsTableViewController

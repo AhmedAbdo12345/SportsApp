@@ -79,7 +79,8 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
     override func viewWillAppear(_ animated: Bool) {
 
         var  reachability = try! Reachability()
-           var myNetworkConnection = MyNetworConnection(reachability: reachability)
+        var myNetworkConnection = MyNetworConnection.getInstantNetworConnection()
+        myNetworkConnection.sendReachability(reachability: reachability)
              
              if myNetworkConnection.isReachableViaWiFi() {
                  
@@ -323,7 +324,8 @@ class DetailsViewController: UIViewController ,UICollectionViewDataSource,UIColl
     
     func navigateToTeamDetailsScreen(teamKey: Int){
         var  reachability = try! Reachability()
-        var myNetworkConnection = MyNetworConnection(reachability: reachability)
+        var myNetworkConnection = MyNetworConnection.getInstantNetworConnection()
+        myNetworkConnection.sendReachability(reachability: reachability)
         
         if myNetworkConnection.isReachableViaWiFi() {
             if sportName == "Football"{

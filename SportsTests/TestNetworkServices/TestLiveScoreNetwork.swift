@@ -22,7 +22,7 @@ final class TestLiveScoreNetwork: XCTestCase {
             XCTAssertNotEqual(liveScoreList.result?.count, 0,"API Failed")
             expectaion.fulfill()
         }
-        // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+        // I put timeout = 30 or 20 Because The Internet Connection in My home is very Week
         waitForExpectations(timeout: 30)
         
     }

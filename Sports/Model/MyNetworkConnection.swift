@@ -11,9 +11,34 @@ class MyNetworConnection{
     
    var reachability : Reachability!
 
-    init(reachability: Reachability!) {
+    
+    
+    private static var instantNetworkConnection : MyNetworConnection!
+   
+   
+   private init(){
+       
+   }
+   func sendReachability(reachability: Reachability!){
+       self.reachability = reachability
+   }
+   
+ static  func getInstantNetworConnection() -> MyNetworConnection{
+     if instantNetworkConnection != nil{
+           return instantNetworkConnection
+       }else{
+           instantNetworkConnection = MyNetworConnection()
+       return instantNetworkConnection
+       }
+   }
+   
+    
+  /*  init(reachability: Reachability!) {
         self.reachability = reachability
-    }
+    }*/
+    
+    
+    
     
     
      func startReachability() {

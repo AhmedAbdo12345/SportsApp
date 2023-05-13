@@ -22,7 +22,7 @@ final class TestTeamsNetwork: XCTestCase {
             XCTAssertNotEqual(teamsList.result?.count, 0,"API Failed")
             expectaion.fulfill()
         }
-        // I put timeout = 30 or 20 Because The Internet Connection in My House is very Week
+        // I put timeout = 30 or 20 Because The Internet Connection in my home is very Week
         waitForExpectations(timeout: 20)
         
     }

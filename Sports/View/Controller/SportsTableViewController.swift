@@ -48,7 +48,8 @@ class SportsTableViewController: UITableViewController , UISearchBarDelegate, Le
         
     override func viewWillAppear(_ animated: Bool) {
         var  reachability = try! Reachability()
-           var myNetworkConnection = MyNetworConnection(reachability: reachability)
+        var myNetworkConnection = MyNetworConnection.getInstantNetworConnection()
+        myNetworkConnection.sendReachability(reachability: reachability)
              if myNetworkConnection.isReachableViaWiFi() {
               /*   NetworkService.fetchResult(sportName: sportName.lowercased()){
                      (res) in DispatchQueue.main.async {
@@ -113,7 +114,8 @@ class SportsTableViewController: UITableViewController , UISearchBarDelegate, Le
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         var  reachability = try! Reachability()
-           var myNetworkConnection = MyNetworConnection(reachability: reachability)
+        var myNetworkConnection = MyNetworConnection.getInstantNetworConnection()
+        myNetworkConnection.sendReachability(reachability: reachability)
              
       if myNetworkConnection.isReachableViaWiFi() {
           var detailsVC =  self.storyboard?.instantiateViewController(withIdentifier: "details") as! DetailsViewController
